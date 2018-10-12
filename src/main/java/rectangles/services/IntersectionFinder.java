@@ -25,21 +25,24 @@ public class IntersectionFinder {
 
     public List<Rectangle> findIntersections() {
         List<Rectangle> intersections = new ArrayList<>();
-        for (Rectangle rectangle : rectangles) {
-            intersections.addAll(findIntersections(rectangle, rectangles.indexOf(rectangle) + 1));
+        if (!rectangles.isEmpty()) {
+            findIntersections(rectangles.get(0), intersections, 1);
         }
         return intersections;
     }
 
-    private List<Rectangle> findIntersections(Rectangle r1, int index) {
-        List<Rectangle> intersections = new ArrayList<>();
+    private List<Rectangle> findIntersections(Rectangle r1, List<Rectangle> intersections, int index) {
         for (int i = index; i < rectangles.size(); i++) {
             Rectangle r2 = rectangles.get(i);
             Optional<Rectangle> result = getIntersection(r1, r2);
             result.ifPresent(x -> {
-                registerIntersection(x, intersections, rectangles.indexOf(r2)+1);
+                registerIntersection(x, intersections, rectangles.indexOf(r2) + 1);
                 output.printIntersection(r1, r2, x);
+                findIntersections(x, intersections, rectangles.indexOf(r2) + 1);
             });
+        }
+        if (index < rectangles.size() - 1) {
+            findIntersections(rectangles.get(index), intersections, index + 1);
         }
         return intersections;
     }
