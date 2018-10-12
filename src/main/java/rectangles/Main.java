@@ -2,6 +2,8 @@ package rectangles;
 
 import rectangles.entities.Rectangle;
 import rectangles.services.IntersectionFinder;
+import rectangles.services.IntersectionOutput;
+import rectangles.services.StandardOutput;
 import rectangles.utils.RectangleInputReader;
 
 import java.io.FileNotFoundException;
@@ -22,7 +24,8 @@ public class Main {
         System.out.println("Input: ");
         rectangles.forEach(x -> System.out.println("\t" + (rectangles.indexOf(x)+1)  + ": " + x));
         System.out.println("\nIntersections:");
-        IntersectionFinder intersectionFinder = new IntersectionFinder(rectangles);
+        IntersectionOutput out = new StandardOutput();
+        IntersectionFinder intersectionFinder = new IntersectionFinder(rectangles, out);
         intersectionFinder.findIntersections();
     }
 }

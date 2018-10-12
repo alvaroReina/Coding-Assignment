@@ -13,35 +13,40 @@ import static java.lang.Math.min;
 public class IntersectionFinder {
 
     private List<Rectangle> rectangles;
-    private HashMap<Rectangle, String> rectangleNames;
+    private HashMap<Rectangle, Integer> intersectionIndexes;
+    private IntersectionOutput output;
 
-    public IntersectionFinder(List<Rectangle> rectangles) {
+    public IntersectionFinder(List<Rectangle> rectangles, IntersectionOutput out) {
         this.rectangles = rectangles;
-        initializeNamesMap(rectangles);
-    }
-
-    private void initializeNamesMap(List<Rectangle> rectangles) {
-        rectangleNames = new HashMap<>();
-        for (int i = 0; i < rectangles.size(); i++) {
-            rectangleNames.put(rectangles.get(i), String.valueOf(i + 1));
-        }
+        this.output = out;
+        output.initialize(rectangles);
+        this.intersectionIndexes = new HashMap<>();
     }
 
     public List<Rectangle> findIntersections() {
         List<Rectangle> intersections = new ArrayList<>();
-        for (int i = 0; i < rectangles.size(); i++) {
-            Rectangle r1 = rectangles.get(i);
-            for (int j = i + 1; j < rectangles.size(); j++) {
-                Rectangle r2 = rectangles.get(j);
-                Optional<Rectangle> result = getIntersection(r1, r2);
-                result.ifPresent(x -> {
-                    intersections.add(x);
-                    rectangleNames.put(x, rectangleNames.get(r1) + ", " + rectangleNames.get(r2));
-                    printIntersection(r1, r2, x);
-                });
-            }
+        for (Rectangle rectangle : rectangles) {
+            intersections.addAll(findIntersections(rectangle, rectangles.indexOf(rectangle) + 1));
         }
         return intersections;
+    }
+
+    private List<Rectangle> findIntersections(Rectangle r1, int index) {
+        List<Rectangle> intersections = new ArrayList<>();
+        for (int i = index; i < rectangles.size(); i++) {
+            Rectangle r2 = rectangles.get(i);
+            Optional<Rectangle> result = getIntersection(r1, r2);
+            result.ifPresent(x -> {
+                registerIntersection(x, intersections, rectangles.indexOf(r2)+1);
+                output.printIntersection(r1, r2, x);
+            });
+        }
+        return intersections;
+    }
+
+    private void registerIntersection(Rectangle intersection, List<Rectangle> intersections, int maxIndex) {
+        intersections.add(intersection);
+        intersectionIndexes.put(intersection, maxIndex);
     }
 
     private Optional<Rectangle> getIntersection(Rectangle r1, Rectangle r2) {
@@ -56,11 +61,6 @@ public class IntersectionFinder {
         } else {
             return Optional.empty();
         }
-    }
-
-    private void printIntersection(Rectangle r1, Rectangle r2, Rectangle intersection) {
-        System.out.println("\tBetween rectangle " + rectangleNames.get(r1) + " and " + rectangleNames.get(r2) +
-                " at (" + intersection.getX() + "," + intersection.getY() + "), w=" + intersection.getW() + ", h=" + intersection.getH() + ".");
     }
 
     private boolean checkOverlap(Rectangle r1, Rectangle r2) {
