@@ -8,6 +8,7 @@ import java.util.Optional;
 
 import static java.lang.Math.max;
 import static java.lang.Math.min;
+import static rectangles.utils.IntersectionUtils.checkOverlap;
 
 public class IntersectionFinder {
 
@@ -55,16 +56,4 @@ public class IntersectionFinder {
         }
     }
 
-    private boolean checkOverlap(Rectangle r1, Rectangle r2) {
-        return !(horizontalOverlap(r1, r2) || verticalOverlap(r1, r2) ||
-                horizontalOverlap(r2, r1) || verticalOverlap(r2, r1));
-    }
-
-    private boolean horizontalOverlap(Rectangle rectangle1, Rectangle rectangle2) {
-        return rectangle1.getX() + rectangle1.getW() < rectangle2.getX();
-    }
-
-    private boolean verticalOverlap(Rectangle rectangle1, Rectangle rectangle2) {
-        return rectangle1.getY() + rectangle1.getH() < rectangle2.getY();
-    }
 }

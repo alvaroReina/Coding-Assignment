@@ -7,10 +7,14 @@ import rectangles.services.StandardOutput;
 import rectangles.utils.RectangleInputReader;
 
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
-public class Main {
-    public static void main(String[] args) throws FileNotFoundException {
+public class Application {
+
+    public static void main(String[] args) {
+        Logger logger = Logger.getLogger(Application.class.getName());
         String fileName;
 
         if (args.length == 1) {
@@ -19,11 +23,14 @@ public class Main {
             throw new IllegalArgumentException("Usage: (filename)");
         }
 
-        RectangleInputReader reader = new RectangleInputReader();
-        List<Rectangle> rectangles = reader.getRectangleListFromFile(fileName);
-        System.out.println("Input: ");
-        rectangles.forEach(x -> System.out.println("\t" + (rectangles.indexOf(x)+1)  + ": " + x));
-        System.out.println("\nIntersections:");
+        List<Rectangle> rectangles = new ArrayList<>();
+        try {
+            rectangles = RectangleInputReader.getRectangleListFromFile(fileName);
+        } catch (FileNotFoundException e) {
+            logger.severe("File not found.");
+            System.exit(1);
+        }
+
         IntersectionOutput out = new StandardOutput();
         IntersectionFinder intersectionFinder = new IntersectionFinder(rectangles, out);
         intersectionFinder.findIntersections();

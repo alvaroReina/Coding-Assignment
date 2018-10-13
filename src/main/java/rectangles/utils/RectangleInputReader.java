@@ -12,15 +12,12 @@ import java.util.stream.Collectors;
 
 public class RectangleInputReader {
 
-    public RectangleInputReader() {
-    }
-
-    public List<Rectangle> getRectangleListFromFile(String filename) throws FileNotFoundException {
+    public static List<Rectangle> getRectangleListFromFile(String filename) throws FileNotFoundException {
         RectangleListAdapter rectangleListAdapter = readJsonFile(filename);
         return getRectangleList(rectangleListAdapter);
     }
 
-    private RectangleListAdapter readJsonFile(String filename) throws FileNotFoundException {
+    private static RectangleListAdapter readJsonFile(String filename) throws FileNotFoundException {
         Gson gson = new Gson();
         FileReader reader = new FileReader(filename);
         JsonReader jsonReader = new JsonReader(reader);
@@ -28,7 +25,7 @@ public class RectangleInputReader {
         return rectangles;
     }
 
-    private List<Rectangle> getRectangleList(RectangleListAdapter rectangleListAdapter) {
+    private static List<Rectangle> getRectangleList(RectangleListAdapter rectangleListAdapter) {
         return rectangleListAdapter.getRectangleList().stream().limit(10).collect(Collectors.toList());
     }
 

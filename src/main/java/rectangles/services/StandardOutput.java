@@ -17,7 +17,12 @@ public class StandardOutput implements IntersectionOutput {
 
     @Override
     public void initialize(List<Rectangle> rectangles) {
-        rectangles.forEach(x -> rectangleNames.put(x, String.valueOf(rectangles.indexOf(x)+1)));
+        System.out.println("Input: ");
+        rectangles.forEach(x -> {
+            System.out.println("\t" + (rectangles.indexOf(x)+1)  + ": " + x);
+            rectangleNames.put(x, String.valueOf(rectangles.indexOf(x)+1));
+        });
+        System.out.println("\nIntersections:");
 
     }
 
