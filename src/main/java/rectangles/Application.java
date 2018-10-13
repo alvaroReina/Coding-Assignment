@@ -7,13 +7,14 @@ import rectangles.services.StandardOutput;
 import rectangles.utils.RectangleInputReader;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
 public class Application {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IntersectingRectanglesException {
         Logger logger = Logger.getLogger(Application.class.getName());
         String fileName;
 
@@ -24,11 +25,15 @@ public class Application {
         }
 
         List<Rectangle> rectangles = new ArrayList<>();
+
         try {
             rectangles = RectangleInputReader.getRectangleListFromFile(fileName);
         } catch (FileNotFoundException e) {
             logger.severe("File not found.");
-            System.exit(1);
+            throw new IntersectingRectanglesException();
+        } catch (IOException e) {
+            logger.severe("Error reading file.");
+            throw new IntersectingRectanglesException();
         }
 
         IntersectionOutput out = new StandardOutput();

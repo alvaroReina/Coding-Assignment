@@ -8,7 +8,7 @@ import java.util.Optional;
 
 import static java.lang.Math.max;
 import static java.lang.Math.min;
-import static rectangles.utils.IntersectionUtils.checkOverlap;
+import static rectangles.utils.RectangleUtils.checkOverlap;
 
 public class IntersectionFinder {
 
