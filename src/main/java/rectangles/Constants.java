@@ -11,5 +11,4 @@ public final class Constants {
     //Name of the JsonElement containing a Rectangle array
     public static final String RECT_LIST_NAME = "rects";
 
-
 }

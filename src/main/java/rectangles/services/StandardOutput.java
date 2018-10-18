@@ -6,12 +6,9 @@ import rectangles.entities.Rectangle;
 import java.util.List;
 
 /**
- *  Uses the standard system output to print rectangles and intersections
+ * Uses the standard system output to print rectangles and intersections
  */
 public class StandardOutput implements IntersectionOutput {
-
-    public StandardOutput() {
-    }
 
     @Override
     public void showInput(List<Rectangle> rectangles) {
@@ -21,7 +18,6 @@ public class StandardOutput implements IntersectionOutput {
             System.out.println("\t" + count + ": " + r);
             count++;
         }
-
     }
 
     @Override

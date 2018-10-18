@@ -1,8 +1,9 @@
 package rectangles.entities;
 
 /**
- * Rectangle entity class, contains information about its position and also a name
- * The name is not required in the specification but its useful to identify each rectangle if its needed
+ * Rectangle entity class, contains information about its position and name.
+ * An invalid Rectangle can be instantiated (width or height less than 1),
+ * but it can be checked using isValidRectangle method
  */
 public class Rectangle {
 
@@ -13,15 +14,15 @@ public class Rectangle {
     private int h;
 
     public Rectangle(int x, int y, int w, int h) {
-        this.name = "";
-        this.x = x;
-        this.y = y;
-        this.w = w;
-        this.h = h;
+        this("", x, y, w, h);
     }
 
     public Rectangle(String name, int x, int y, int w, int h) {
-        this.name = name;
+        if (name != null) {
+            this.name = name;
+        } else {
+            this.name = "";
+        }
         this.x = x;
         this.y = y;
         this.w = w;
@@ -69,30 +70,33 @@ public class Rectangle {
     }
 
     /**
-     * Two rectangles overlap don't overlap if there is not a vertical overlap
-     * or horizontal overlap between them
+     * Two rectangles intersect if there is not a horizontal separation
+     * or vertical separation between them.
      *
-     * @return true if both rectangles overlap
+     * @return true if this rectangle and r intersect (Rectangular, edge or point intersection)
      */
-    public static boolean checkOverlap(Rectangle r1, Rectangle r2) {
-        return !(r1.horizontalSeparationWith(r2) || r1.verticalSeparationWith(r2) ||
-                r2.horizontalSeparationWith(r1) || r2.verticalSeparationWith(r1));
+    public boolean intersectWith(Rectangle r) {
+        return !(this.horizontalSeparationWith(r) || this.verticalSeparationWith(r));
     }
 
     /**
-     * @param r A rectangle to compare with
-     * @return true if rectangle1 right edge is to the left of rectangle2 left edge
+     * A horizontal separation between two rectangles exists if they dont have a common range of values
+     * in the x axis.
+     *
+     * @return true if they do not touch in the x axis.
      */
     public boolean horizontalSeparationWith(Rectangle r) {
-        return this.x + this.w < r.getX();
+        return (this.x + this.w < r.getX()) || (r.getX() + r.getW() < this.x);
     }
 
     /**
-     * @param r A rectangle to compare with
-     * @return true if rectangle1 top edge is below rectangle2 bottom edge
+     * A vertical separation between two rectangles exists if they dont have a common range of values
+     * in the y axis.
+     *
+     * @return true if they do not touch in the y axis.
      */
     public boolean verticalSeparationWith(Rectangle r) {
-        return this.y + this.h < r.getY();
+        return (this.y + this.h < r.getY()) || (r.getY() + r.getH() < this.y);
     }
 
     /**
@@ -102,11 +106,11 @@ public class Rectangle {
      * @return true if the rectangle is valid
      */
     public boolean isValidRectangle() {
-        return this.h >= 1 && this.w >=  1;
+        return this.h >= 1 && this.w >= 1;
     }
 
     /**
-     *  Two rectangles are equals if each one of their fields are equals
+     * Two rectangles are equals if each one of their fields are equals
      *
      * @param obj An Object to compare
      * @return true if they are equals

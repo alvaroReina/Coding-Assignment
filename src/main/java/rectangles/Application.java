@@ -5,18 +5,18 @@ import rectangles.entities.Rectangle;
 import rectangles.services.IntersectionFinder;
 import rectangles.services.IntersectionOutput;
 import rectangles.services.StandardOutput;
+import rectangles.utils.InputReaderException;
 import rectangles.utils.RectangleInputReader;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
+/**
+ * The entry point for this application, checks the program arguments
+ * and proceeds to use the public API to solve the assignment.
+ */
 public class Application {
 
-
-    public static void main(String[] args) throws IntersectingRectanglesException {
+    public static void main(String[] args) throws InputReaderException {
         String fileName;
 
         if (args.length == 1) {
@@ -26,15 +26,12 @@ public class Application {
         }
 
         RectangleInputReader rectangleInputReader = new RectangleInputReader();
+        IntersectionOutput out = new StandardOutput();
 
         List<Rectangle> rectangles = rectangleInputReader.getRectangleListFromFile(fileName);
-
-        IntersectionOutput out = new StandardOutput();
         IntersectionFinder intersectionFinder = new IntersectionFinder(rectangles);
-
         out.showInput(rectangles);
         List<Intersection> intersections = intersectionFinder.findIntersections();
         out.showIntersections(intersections);
-
     }
 }
